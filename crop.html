@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroCulture - Agricultural Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --accent-color: #8BC34A;
+            --dark-color: #2E7D32;
+            --light-color: #C8E6C9;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .sidebar {
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+        
+        .admin-sidebar {
+            background-color: #343a40;
+        }
+        
+        .farmer-sidebar {
+            background-color: var(--secondary-color);
+        }
+        
+        .buyer-sidebar {
+            background-color: #007bff;
+        }
+        
+        .dashboard-card {
+            transition: transform 0.3s;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+        
+        footer {
+            margin-top: auto;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .product-card {
+            transition: all 0.3s;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-img {
+            transform: scale(1.1);
+        }
+        
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+        
+        .featured-products {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+        
+        .product-img-container {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .product-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .view-all-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .view-all-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .marketplace-section {
+            padding: 60px 0;
+        }
+        
+        .category-card {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .category-img {
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .category-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .product-modal-img {
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .farmer-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .upload-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .pagination .page-link {
+            color: var(--primary-color);
+        }
+        
+        .order-card {
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .order-card:hover {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">
+                <i class="fas fa-leaf me-2"></i>AgroCulture
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="marketplace.php">Marketplace</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.php">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.php">Contact</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo $_SESSION['role']; ?>/dashboard.php">
+                                <i class="fas fa-user me-1"></i> My Account
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="cart.php">
+                                <i class="fas fa-shopping-cart me-1"></i> Cart
+                                <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
+                                    <span class="badge bg-danger"><?php echo count($_SESSION['cart']); ?></span>
+                                <?php endif; ?>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">
+                                <i class="fas fa-sign-out-alt me-1"></i> Logout
+                            </a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid p-0">
+        <!-- Hero Section -->
+        <header class="hero-section">
+            <div class="container">
+                <h1 class="display-4 fw-bold mb-4">Your Product, Our Market</h1>
+                <p class="lead fs-4 mb-5">Connecting farmers directly with buyers</p>
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    <button class="btn btn-light btn-lg me-3" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <button class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
+                <?php else: ?>
+                    <a href="marketplace.php" class="btn btn-light btn-lg me-3">Browse Marketplace</a>
+                    <a href="<?php echo $_SESSION['role']; ?>/dashboard.php" class="btn btn-outline-light btn-lg">My Dashboard</a>
+                <?php endif; ?>
+            </div>
+        </header>
+
+        <!-- Features Section -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-tractor fa-3x text-success mb-3"></i>
+                                <h3>For Farmers</h3>
+                                <p>Sell your products directly to buyers without middlemen</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-shopping-basket fa-3x text-success mb-3"></i>
+                                <h3>For Buyers</h3>
+                                <p>Get fresh farm products directly from producers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                                <h3>Market Insights</h3>
+                                <p>Real-time pricing and demand information</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section class="featured-products">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Featured Products</h2>
+                    <p class="text-muted">Fresh from our farmers to your table</p>
+                </div>
+                
+                <div class="row">
+                    <?php
+                    // Sample featured products (in a real application, these would come from a database)
+                    $featured_products = [
+                        [
+                            'id' => 1,
+                            'name' => 'Organic Tomatoes',
+                            'price' => 4500,
+                            'category' => 'Vegetables',
+                            'image' => 'https://images.unsplash.com/photo-1561136594-7f68413baa99?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                            'description' => 'Fresh organic tomatoes from our farm, harvested daily.',
+                            'location' => 'Kampala',
+                            'quantity' => 50
+                        ],
+                        [
+                            'id' => 2,
+                            'name' => 'Fresh Bananas',
+                            'price' => 3000,
+                            'category' => 'Fruits',
+                            'image' => 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80',
+                            'description' => 'Sweet and ripe bananas, perfect for eating or cooking.',
+                            'location' => 'Jinja',
+                            'quantity' => 80
+                        ],
+                        [
+                            'id' => 3,
+                            'name' => 'Organic Carrots',
+                            'price' => 4000,
+                            'category' => 'Vegetables',
+                            'image' => 'https://images.unsplash.com/photo-1445282768818-728615cc910a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                            'description' => 'Fresh organic carrots, rich in vitamins and minerals.',
+                            'location' => 'Wakiso',
+                            'quantity' => 60
+                        ],
+                        [
+                            'id' => 4,
+                            'name' => 'Avocados',
+                            'price' => 5000,
+                            'category' => 'Fruits',
+                            'image' => 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2068&q=80',
+                            'description' => 'Creamy avocados, perfect for salads and sandwiches.',
+                            'location' => 'Mukono',
+                            'quantity' => 40
+                        ]
+                    ];
+                    
+                    foreach ($featured_products as $product): 
+                    ?>
+                    <div class="col-md-3">
+                        <div class="product-card h-100">
+                            <div class="product-img-container position-relative">
+                                <img src="<?php echo $product['image']; ?>" 
+                                     class="product-img" alt="<?php echo $product['name']; ?>">
+                                <div class="product-category"><?php echo $product['category']; ?></div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $product['name']; ?></h5>
+                                <p class="product-price">UGX <?php echo number_format($product['price'], 2); ?></p>
+                                <p class="card-text text-muted small"><?php echo substr($product['description'], 0, 60); ?>...</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-map-marker-alt me-1"></i> <?php echo $product['location']; ?>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="fas fa-box me-1"></i> <?php echo $product['quantity']; ?> kg available
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-0">
+                                <a href="product.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-success w-100">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <a href="marketplace.php" class="btn view-all-btn">
+                        View All Products <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="py-5">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">How AgroCulture Works</h2>
+                    <p class="text-muted">Simple steps to connect farmers and buyers</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 text-center p-4">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                <i class="fas fa-user-plus fa-2x text-success"></i>
+                            </div>
+                            <h4>1. Create Account</h4>
+                            <p>Register as a farmer or buyer in just a few minutes</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 text-center p-4">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                <i class="fas fa-upload fa-2x text-success"></i>
+                            </div>
+                            <h4>2. List or Browse</h4>
+                            <p>Farmers list products, buyers browse the marketplace</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 text-center p-4">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-3 mb-3">
+                                <i class="fas fa-handshake fa-2x text-success"></i>
+                            </div>
+                            <h4>3. Connect & Trade</h4>
+                            <p>Make orders, negotiate prices, and arrange delivery</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login to AgroCulture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="login.php">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Login As</label>
+                            <select class="form-select" name="role" required>
+                                <option value="farmer">Farmer</option>
+                                <option value="buyer">Buyer</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <button type="submit" name="login" class="btn btn-success w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register for AgroCulture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="register.php" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" name="confirm_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" name="profile_pic" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Register As</label>
+                            <select class="form-select" name="role" required>
+                                <option value="farmer">Farmer</option>
+                                <option value="buyer">Buyer</option>
+                            </select>
+                        </div>
+                        <button type="submit" name="register" class="btn btn-success w-100">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>AgroCulture</h5>
+                    <p>Your Product, Our Market - Connecting farmers directly with buyers</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.php" class="text-white">Home</a></li>
+                        <li><a href="marketplace.php" class="text-white">Marketplace</a></li>
+                        <li><a href="about.php" class="text-white">About Us</a></li>
+                        <li><a href="contact.php" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contact Us</h5>
+                    <address>
+                        <i class="fas fa-map-marker-alt me-2"></i> Farm Street, Agricultural Zone<br>
+                        <i class="fas fa-phone me-2"></i> +256 769747722<br>
+                        <i class="fas fa-envelope me-2"></i> info@agroculture.com
+                    </address>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; <?php echo date('Y'); ?> AgroCulture. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Show logout success message if present
+            if (window.location.search.includes('logout=success')) {
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-success alert-dismissible fade show m-3';
+                alert.role = 'alert';
+                alert.innerHTML = `
+                    You have been successfully logged out.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                document.body.prepend(alert);
+            }
+        });
+    </script>
+</body>
+</html>
